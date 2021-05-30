@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real time node chat </title>
+<link rel = "stylesheet" href="style.css">
+<script>
+	var name = prompt("Enter your name");
+</script>
+</head>
+<body>
+	<div id="bb">
+		<h1>Buffer Talks</h1>
+	  </div>
+ <div id="messages" class="container">
+    
+  
+ </div>
+ <div  class="send">
+     <form action="#" id ="send-container">
+         <input type="text" name="messageInp" id="messageInp" >
+         <button class="btn" type="submit">send</button>
+     </form>
+ </div>
+ <script src="/socket.io/socket.io.js"></script>
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ <script>
+		
+	var socket = io();
+
+	socket.emit('joining msg', name);
+
+	$('form').submit(function(e) {
+		e.preventDefault();          
+		  socket.emit('chat message', (name + ':  ' + $('#messageInp').val()));
+				$('#messages').append($(' <div class="message right"></div>').text('You:  ' + $('#messageInp').val()));
+		  $('#messageInp').val('');
+		  return false;
+	});
+	socket.on('chat message', function(msg){
+		  $('#messages').append($('<div class=" message left"></div>').text(msg));
+	});
+  
+</script>
+</body>
+</html>
